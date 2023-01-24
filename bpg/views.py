@@ -312,7 +312,7 @@ def update_user_details(request,user_id,object_id,app_name):
     print("app_name",app_name)
     print("object_id",object_id)
     print("user_id",user_id)
-    url = 'https://login.microsoftonline.com/f9aa5788-eb33-4a49-8ad0-76101910cac3/oauth2/v2.0/token'
+    url = 'https://login.microsoftonline.com/bd7ea6b1-f947-459d-ad5a-0ea3fc55cc85/oauth2/v2.0/token'
     
     req_body = {"client_secret":str(settings.CLIENT_SECRET),"client_id":str(settings.CLIENT_ID),"scope":"https://graph.microsoft.com/.default","grant_type":"client_credentials"}
     response = requests.post(url, data=req_body)
@@ -335,14 +335,14 @@ def update_user_details(request,user_id,object_id,app_name):
         'ConsistencyLevel':'eventual',
         'Authorization': 'Bearer  {}'.format(response.json()['access_token'])
     }
-    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_a05c0d9bb29f482f8f170eb6d040af5b_FA_Session_UserID',headers=head2)
+    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID ',headers=head2)
     json_res = json.loads(response3.text)
     for i in range(0,9):
-        if json_res['extension_a05c0d9bb29f482f8f170eb6d040af5b_FA_Session_UserID'] == user_id:
+        if json_res['extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID'] == user_id:
             break
         else:
             time.sleep(8)
-            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_a05c0d9bb29f482f8f170eb6d040af5b_FA_Session_UserID',headers=head2)
+            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID',headers=head2)
             json_res = json.loads(response3.text)
             
         
