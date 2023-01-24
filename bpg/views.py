@@ -335,7 +335,7 @@ def update_user_details(request,user_id,object_id,app_name):
         'ConsistencyLevel':'eventual',
         'Authorization': 'Bearer  {}'.format(response.json()['access_token'])
     }
-    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID ',headers=head2)
+    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID',headers=head2)
     json_res = json.loads(response3.text)
     for i in range(0,9):
         if json_res['extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID'] == user_id:
