@@ -326,7 +326,10 @@ def update_user_details(request,user_id,object_id,app_name):
     print(req_body2)
     head = {'Authorization': 'Bearer  {}'.format(response.json()['access_token'])}
     response2 = requests.patch(url=url2, json=req_body2,headers=head)
-    
+    json_res = json.loads(response2.text)
+    print('*****UPDATE JSON RESPONSE****')
+    print(json_res)
+    print('*****UPDATE JSON RESPONSE****')
     xmldoc = ET.parse(os.path.join(
             os.path.dirname(__file__), 'services.xml'))
     print(xmldoc)
@@ -337,7 +340,9 @@ def update_user_details(request,user_id,object_id,app_name):
     }
     response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID',headers=head2)
     json_res = json.loads(response3.text)
+    print('*****QUERY JSON RESPONSE****')
     print(json_res)
+    print('*****QUERY JSON RESPONSE****')
     for i in range(0,9):
         print(user_id)
         if json_res['extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID'] == user_id:
