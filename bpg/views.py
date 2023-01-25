@@ -41,21 +41,43 @@ def init(request):
             os.path.dirname(__file__), 'services.xml'))
         root = xmldoc.getroot()
         serviceList = []
-        try:
-            supplieraccess_list = []
-            for item in other_att:
-                f = {}
-                # item.split("|")[0].upper()
+        # try:
+        supplieraccess_list = []
+        fa = 0
+        ilerpt = 0
+        staf = 0
+        for j in other_att:
+            print(j.split("|")[0])
+            if j.split("|")[0]=="FA":
+                fa = fa+1
+            elif j.split("|")[0]=="ILERPT":
+                ilerpt = ilerpt + 1
+            elif j.split("|")[0]=="STAF":  
+                staf = staf + 1
+        for item in other_att:
+            f = {}
+            # item.split("|")[0].upper()
+            if fa > 1 and item.split("|")[0] == "FA":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
-                f['uid'] = item.split("|")[1]     
-                d = f
-                # print(d)
-                supplieraccess_list.append(d)
-            print(supplieraccess_list)    
-        except:
-            messages.success(request,'You are not authorized to use the services of Business Process Gateway. Please contact your manager for assistance.')                
+                f['uid'] = item.split("|")[1]  
+            elif ilerpt > 1 and item.split("|")[0] == "ILERPT":    
+                f['app_name']=item.split("|")[0]
+                f['sup_id']=item.split("|")[-3]
+                f['sup_name']=item.split("|")[3]
+                f['uid'] = item.split("|")[1]  
+            elif staf > 1 and item.split("|")[0] == "STAF":    
+                f['app_name']=item.split("|")[0]
+                f['sup_id']=item.split("|")[-3]
+                f['sup_name']=item.split("|")[3]
+                f['uid'] = item.split("|")[1]  
+            # print(d)
+            supplieraccess_list.append(f)
+
+        print("supplieraccess_list",supplieraccess_list)    
+        # except:
+        #     messages.success(request,'You are not authorized to use the services of Business Process Gateway. Please contact your manager for assistance.')                
         for child in root:
             service = UspsServices()        
             service.serviceCode = child.attrib['serviceCode'].upper()
@@ -99,7 +121,7 @@ def init(request):
             service.id = child.attrib['id']                
             serviceList.append(service)
         serviceList.append(user_data)    
-    return render(request, 'bpgtemplate.html',{"tenant_id":tenant_id,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
+    return render(request, 'bpgtemplate.html',{"fa":fa,"ilerpt":ilerpt,"staf":staf,"tenant_id":tenant_id,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
         
 
 # Get User Details        
@@ -188,10 +210,6 @@ def get_user_name(request):
     #   {
     #     "typ": "ILE_Alternate_UserID_2",
     #     "val": "ILERPT|UC00000011|000406395|MAXWAY|TRUE"
-    #   },
-    #   {
-    #     "typ": "ILE_Alternate_UserID_3",
-    #     "val": "FA|UC10000011|001105117|10 ROADS|TRUE"
     #   },
     #   {
     #     "typ": "ILE_Alternate_UserID_4",

@@ -271,6 +271,7 @@
 													<!-- begin Go to Service button-->
 
 													{%if lst.serviceCode == "ILERPT" %}	
+													{% if ilerpt > 1 %}
 														<div class="dropdown">
 															<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 																Go to Service
@@ -283,20 +284,40 @@
 															{% endfor %}
 															</div>
 														</div>
-													{%elif lst.serviceCode == "FA" %}
-														<div class="dropdown">
-															<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-																Go to Service
+													{%else%}
+														<a title="Go to Service" href="{{lst.url}}" tabindex="39">
+															<button class="btn btn-sm btn-primary service-button"
+																alt="Go to {{lst.serviceName}} service button"
+																type="button">
+																<span class="service-link">Go to Service</span>
 															</button>
-															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+														</a>
+													{%endif%}	
+													{%elif lst.serviceCode == "FA" %}
+													{% if fa > 1 %}
+													<div class="dropdown">
+														<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															Go to Service
+														</button>
+														<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
-																{%if supp.app_name == "FA"%}
-																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name tenant_id %}" tabindex="39">{{ supp.sup_name|safe }}</a>
-																{%endif%}
+															{%if supp.app_name == "FA"%}
+															<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name tenant_id %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+															{%endif%}
 															{% endfor %}
-															</div>
 														</div>
+													</div>
+													{%else%}
+													<a title="Go to Service" href="{{lst.url}}" tabindex="39">
+														<button class="btn btn-sm btn-primary service-button"
+															alt="Go to {{lst.serviceName}} service button"
+															type="button">
+															<span class="service-link">Go to Service</span>
+														</button>
+													</a>
+													{%endif%}
 													{%else%}	
+													{%if staf > 1%}
 														<div class="dropdown">
 															<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 																Go to Service
@@ -309,6 +330,15 @@
 															{% endfor %}
 															</div>
 														</div>
+													{%else%}
+														<a title="Go to Service" href="{{lst.url}}" tabindex="39">
+															<button class="btn btn-sm btn-primary service-button"
+																alt="Go to {{lst.serviceName}} service button"
+																type="button">
+																<span class="service-link">Go to Service</span>
+															</button>
+														</a>
+														{%endif%}	
 													{% endif %}	
 													<!-- Pushing Logout URL into Array-->
 													<script>logoutUrls.push("{{lst.logoutUrl}}")</script>
