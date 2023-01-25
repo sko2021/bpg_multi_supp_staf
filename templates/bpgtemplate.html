@@ -278,7 +278,7 @@
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
 																{%if supp.app_name == "ILERPT"%}
-																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name tenant_id %}" tabindex="39">{{ supp.sup_name|safe }}</a>
 																{%endif%}
 															{% endfor %}
 															</div>
@@ -291,7 +291,7 @@
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
 																{%if supp.app_name == "FA"%}
-																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name tenant_id %}" tabindex="39">{{ supp.sup_name|safe }}</a>
 																{%endif%}
 															{% endfor %}
 															</div>
@@ -304,7 +304,7 @@
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
 																{%if supp.app_name == "STAF"%}
-																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name tenant_id %}" tabindex="39">{{ supp.sup_name|safe }}</a>
 																{%endif%}
 															{% endfor %}
 															</div>

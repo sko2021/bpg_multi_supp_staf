@@ -26,7 +26,7 @@ def logout(request):
 
 def init(request):
     # Populate User Details
-    user_data,other_att,object_id = get_user_name(request)
+    user_data,other_att,object_id,tenant_id = get_user_name(request)
     # print(user_data)
     if not hasattr(user_data, "userName") or user_data.userName == "":
         # If User Details not available, Return to Login Page
@@ -99,7 +99,7 @@ def init(request):
             service.id = child.attrib['id']                
             serviceList.append(service)
         serviceList.append(user_data)    
-    return render(request, 'bpgtemplate.html',{"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
+    return render(request, 'bpgtemplate.html',{"tenant_id":tenant_id,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
         
 
 # Get User Details        
@@ -201,7 +201,10 @@ def get_user_name(request):
     # l,other_att,object_id= get_access_list(user_claim)
     # print("obj",object_id)
     # user_details.ileAccessList = l
-    # return(user_details,other_att,object_id)
+    # for userclm in user_claim:
+    #     if userclm['typ'].endswith('tenantid'):
+    #         tenant_id = userclm['val']
+    # return(user_details,other_att,object_id,tenant_id)
     
     try:
         user_details = UserDetails()
@@ -221,13 +224,16 @@ def get_user_name(request):
         print("before_user_ileAccessList",user_details.ileAccessList)
         user_details.ileAccessList,other_att,object_id=get_access_list (auth_response['user_claims'])
         print(user_details.ileAccessList,other_att,object_id)
+        for userclm in auth_response['user_claims']:
+            if userclm['typ'].endswith('tenantid'):
+                tenant_id = userclm['val']
         # Generate Login URL
         user_details.loginUrl = get_login_url (auth_response['user_claims'])
         print("user_details",user_details)
         #user_ileAccessList [{'typ': 'ILE_Alternate_UserID_1', 'val': 'FA|UC00000011|000406395|MAXWAY|TRUE'}, {'typ': 'ILE_Alternate_UserID_2', 'val': 'ILERPT|UC00000011|000406395|MAXWAY|TRUE'}, {'typ': 'ILE_Alternate_UserID_3', 'val': 'FA|UC10000011|001105117|10 ROADS|TRUE'}, {'typ': 'ILE_Alternate_UserID_4', 'val': 'ILERPT|UC10000011|001105117|10 ROADS|TRUE'}]
 
         print("user_ileAccessList",user_details.ileAccessList)
-        return (user_details,other_att,object_id)
+        return (user_details,other_att,object_id,tenant_id)
         
     except Exception as e:
         print ("get_user_name Exception")
@@ -308,11 +314,12 @@ def get_login_url(user_claims):
 
 from django.shortcuts import redirect
 
-def update_user_details(request,user_id,object_id,app_name):
+def update_user_details(request,user_id,object_id,app_name,tenant_id):
     print("app_name",app_name)
     print("object_id",object_id)
     print("user_id",user_id)
-    url = 'https://login.microsoftonline.com/f9aa5788-eb33-4a49-8ad0-76101910cac3/oauth2/v2.0/token'
+    print("tenant_id",tenant_id)
+    url = 'https://login.microsoftonline.com/{}/oauth2/v2.0/token'.format(tenant_id)
     
     req_body = {"client_secret":str(settings.CLIENT_SECRET),"client_id":str(settings.CLIENT_ID),"scope":"https://graph.microsoft.com/.default","grant_type":"client_credentials"}
     response = requests.post(url, data=req_body)
@@ -338,6 +345,8 @@ def update_user_details(request,user_id,object_id,app_name):
         'ConsistencyLevel':'eventual',
         'Authorization': 'Bearer  {}'.format(response.json()['access_token'])
     }
+    extention_attribute = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
+    print("extention_attribute",extention_attribute)
     response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,extension_c32a5a73dba048e9b4180f3fd8bdeaf2_STAF_Session_UserID',headers=head2)
     json_res = json.loads(response3.text)
     print('*****QUERY JSON RESPONSE****')
