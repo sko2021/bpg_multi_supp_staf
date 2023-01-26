@@ -360,8 +360,8 @@ def update_user_details(request,user_id,object_id,app_name):
         'Authorization': 'Bearer  {}'.format(response.json()['access_token'])
     }
     extention_attribute = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
-    env_ext_att = settings.extention_attribute
-    print("extention_attribute",extention_attribute)
+    env_ext_att = os.environ.get(extention_attribute)
+    # print("extention_attribute",extention_attribute)
     response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{env_ext_att}',headers=head2)
     json_res = json.loads(response3.text)
     print('*****QUERY JSON RESPONSE****')
