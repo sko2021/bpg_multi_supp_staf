@@ -8,6 +8,37 @@
 	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 	<script>
+		function app_logout(app_name) {
+			console.log(`Initiating Logout For Application ${app_name}`);
+			try {
+				for (i = 0; i < ApplogoutUrls.length; i++) {
+					console.log("Calling URL[" + i + "]: " + ApplogoutUrls[i]['logouturl']);
+					console.log(ApplogoutUrls[i]['app_name'])
+					console.log(ApplogoutUrls[i]['logouturl'])
+					if (ApplogoutUrls[i]['app_name'] == app_name){
+						console.log('App name matched')
+						$.ajax({
+							url: ApplogoutUrls[i]['logouturl'],
+							type: "GET",
+							async: false,
+							cache: false,
+							timeout: 30000,
+							success: function (data, status, jqXHR) {
+								console.log("Status[" + i + "]: " + jqXHR.status);
+							},
+							error: function (error) {
+								console.log(error);
+							}
+						})
+					}
+				}
+			}
+			catch (error) {
+				console.log(error);
+			}
+		}
+	</script>
+	<script>
 		/*
 		* show and hide descriptions for services
 		*/
@@ -134,6 +165,7 @@
 											style="float: right; padding-right: 0%;">
 											<!-- String Logout URLs -->
 											<script>var logoutUrls = []</script>
+											<script>var ApplogoutUrls = []</script>
 											{% for lst in serviceList %}
 											{% if lst.userName %}
 											<li style="padding-right: 20px;">
@@ -279,7 +311,10 @@
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
 																{%if supp.app_name == "ILERPT"%}
-																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+																<script>ApplogoutUrls.push({"logouturl":'{{lst.logoutUrl}}',"app_name":'{{supp.app_name}}'})</script>
+																<a class="dropdown-item" onclick="app_logout('{{supp.app_name}}')"
+																href="{% url 'update' supp.uid object_id supp.app_name %}"
+																tabindex="39">{{ supp.sup_name|safe }}</a>
 																{%endif%}
 															{% endfor %}
 															</div>
@@ -302,7 +337,10 @@
 														<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
 															{%if supp.app_name == "FA"%}
-															<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+															<script>ApplogoutUrls.push({"logouturl":'{{lst.logoutUrl}}',"app_name":'{{supp.app_name}}'})</script>
+															<a class="dropdown-item" onclick="app_logout('{{supp.app_name}}')"
+																href="{% url 'update' supp.uid object_id supp.app_name %}"
+																tabindex="39">{{ supp.sup_name|safe }}</a>
 															{%endif%}
 															{% endfor %}
 														</div>
@@ -325,7 +363,10 @@
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 															{% for supp in SupplieracessList %}
 																{%if supp.app_name == "STAF"%}
-																<a class="dropdown-item" href="{% url 'update' supp.uid object_id supp.app_name %}" tabindex="39">{{ supp.sup_name|safe }}</a>
+																<script>ApplogoutUrls.push({"logouturl":'{{lst.logoutUrl}}',"app_name":'{{supp.app_name}}'})</script>
+															<a class="dropdown-item" onclick="app_logout('{{supp.app_name}}')"
+																href="{% url 'update' supp.uid object_id supp.app_name %}"
+																tabindex="39">{{ supp.sup_name|safe }}</a>
 																{%endif%}
 															{% endfor %}
 															</div>
