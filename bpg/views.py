@@ -26,7 +26,7 @@ def logout(request):
 
 def init(request):
     # Populate User Details
-    user_data,other_att,object_id,tenant_id = get_user_name(request)
+    user_data,other_att,object_id = get_user_name(request)
     # print(user_data)
     if not hasattr(user_data, "userName") or user_data.userName == "":
         # If User Details not available, Return to Login Page
@@ -121,7 +121,7 @@ def init(request):
             service.id = child.attrib['id']                
             serviceList.append(service)
         serviceList.append(user_data)    
-    return render(request, 'bpgtemplate.html',{"fa":fa,"ilerpt":ilerpt,"staf":staf,"tenant_id":tenant_id,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
+    return render(request, 'bpgtemplate.html',{"fa":fa,"ilerpt":ilerpt,"staf":staf,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
         
 
 # Get User Details        
@@ -242,16 +242,13 @@ def get_user_name(request):
         print("before_user_ileAccessList",user_details.ileAccessList)
         user_details.ileAccessList,other_att,object_id=get_access_list (auth_response['user_claims'])
         print(user_details.ileAccessList,other_att,object_id)
-        for userclm in auth_response['user_claims']:
-            if userclm['typ'].endswith('tenantid'):
-                tenant_id = userclm['val']
         # Generate Login URL
         user_details.loginUrl = get_login_url (auth_response['user_claims'])
         print("user_details",user_details)
         #user_ileAccessList [{'typ': 'ILE_Alternate_UserID_1', 'val': 'FA|UC00000011|000406395|MAXWAY|TRUE'}, {'typ': 'ILE_Alternate_UserID_2', 'val': 'ILERPT|UC00000011|000406395|MAXWAY|TRUE'}, {'typ': 'ILE_Alternate_UserID_3', 'val': 'FA|UC10000011|001105117|10 ROADS|TRUE'}, {'typ': 'ILE_Alternate_UserID_4', 'val': 'ILERPT|UC10000011|001105117|10 ROADS|TRUE'}]
 
         print("user_ileAccessList",user_details.ileAccessList)
-        return (user_details,other_att,object_id,tenant_id)
+        return (user_details,other_att,object_id)
         
     except Exception as e:
         print ("get_user_name Exception")
@@ -332,12 +329,11 @@ def get_login_url(user_claims):
 
 from django.shortcuts import redirect
 
-def update_user_details(request,user_id,object_id,app_name,tenant_id):
+def update_user_details(request,user_id,object_id,app_name):
     print("app_name",app_name)
     print("object_id",object_id)
     print("user_id",user_id)
-    print("tenant_id",tenant_id)
-    url = 'https://login.microsoftonline.com/{}/oauth2/v2.0/token'.format(tenant_id)
+    url = 'https://login.microsoftonline.com/{}/oauth2/v2.0/token'.format(settings.TENANT_ID)
     
     req_body = {"client_secret":str(settings.CLIENT_SECRET),"client_id":str(settings.CLIENT_ID),"scope":"https://graph.microsoft.com/.default","grant_type":"client_credentials"}
     response = requests.post(url, data=req_body)
