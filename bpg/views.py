@@ -98,6 +98,9 @@ def init(request):
                     elif "ILERPT" == item.split("|")[0].upper(): 
                         service.accessFlag = True  
                         break    
+                    elif "STAF" == item.split("|")[0].upper(): 
+                        service.accessFlag = True  
+                        break                          
                     else :
                         service.accessFlag = False
             except Exception as e:
