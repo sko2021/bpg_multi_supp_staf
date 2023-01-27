@@ -124,7 +124,7 @@ def init(request):
             service.id = child.attrib['id']                
             serviceList.append(service)
         serviceList.append(user_data)    
-    return render(request, 'bpgtemplate.html',{"fa":fa,"ilerpt":ilerpt,"staf":staf,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
+    return render(request, 'bpgtemplate.html',{"fa_supp_count":fa_supp_count,"ilerpt_supp_count":ilerpt_supp_count,"staf_supp_count":staf_supp_count,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
         
 
 # Get User Details        
