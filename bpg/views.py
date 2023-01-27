@@ -43,9 +43,9 @@ def init(request):
         serviceList = []
         # try:
         supplieraccess_list = []
-        fa = 0
-        ilerpt = 0
-        staf = 0
+        fa_supp_count = 0
+        ilerpt_supp_count = 0
+        staf_supp_count = 0
         for j in other_att:
             print(j.split("|")[0])
             if j.split("|")[0]=="FA":
@@ -98,6 +98,9 @@ def init(request):
                     elif "ILERPT" == item.split("|")[0].upper(): 
                         service.accessFlag = True  
                         break    
+                    elif "STAF" == item.split("|")[0].upper(): 
+                        service.accessFlag = True  
+                        break                          
                     else :
                         service.accessFlag = False
             except Exception as e:
@@ -362,18 +365,18 @@ def update_user_details(request,user_id,object_id,app_name):
     extention_attribute = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
     env_ext_att = os.environ.get(extention_attribute)
     # print("extention_attribute",extention_attribute)
-    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{env_ext_att}',headers=head2)
+    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{k}',headers=head2)
     json_res = json.loads(response3.text)
     print('*****QUERY JSON RESPONSE****')
     print(json_res)
     print('*****QUERY JSON RESPONSE****')
     for i in range(0,9):
         print(user_id)
-        if json_res[env_ext_att] == user_id:
+        if json_res[k] == user_id:
             break
         else:
             time.sleep(8)
-            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{env_ext_att}',headers=head2)
+            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{k}',headers=head2)
             json_res = json.loads(response3.text)
             
         
