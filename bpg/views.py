@@ -49,25 +49,25 @@ def init(request):
         for j in other_att:
             print(j.split("|")[0])
             if j.split("|")[0]=="FA":
-                fa = fa+1
+                fa_supp_count = fa_supp_count+1
             elif j.split("|")[0]=="ILERPT":
-                ilerpt = ilerpt + 1
+                ilerpt_supp_count = ilerpt_supp_count + 1
             elif j.split("|")[0]=="STAF":  
-                staf = staf + 1
+                staf_supp_count = staf_supp_count + 1
         for item in other_att:
             f = {}
             # item.split("|")[0].upper()
-            if fa > 1 and item.split("|")[0] == "FA":    
+            if fa_supp_count > 1 and item.split("|")[0] == "FA":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
                 f['uid'] = item.split("|")[1]  
-            elif ilerpt > 1 and item.split("|")[0] == "ILERPT":    
+            elif ilerpt_supp_count > 1 and item.split("|")[0] == "ILERPT":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
                 f['uid'] = item.split("|")[1]  
-            elif staf > 1 and item.split("|")[0] == "STAF":    
+            elif staf_supp_count > 1 and item.split("|")[0] == "STAF":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
