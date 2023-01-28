@@ -43,31 +43,31 @@ def init(request):
         serviceList = []
         # try:
         supplieraccess_list = []
-        fa = 0
-        ilerpt = 0
-        staf = 0
+        fa_supp_count = 0
+        ilerpt_supp_count = 0
+        staf_supp_count = 0
         for j in other_att:
             print(j.split("|")[0])
             if j.split("|")[0]=="FA":
-                fa = fa+1
+                fa_supp_count = fa_supp_count+1
             elif j.split("|")[0]=="ILERPT":
-                ilerpt = ilerpt + 1
+                ilerpt_supp_count = ilerpt_supp_count + 1
             elif j.split("|")[0]=="STAF":  
-                staf = staf + 1
+                staf_supp_count = staf_supp_count + 1
         for item in other_att:
             f = {}
             # item.split("|")[0].upper()
-            if fa > 1 and item.split("|")[0] == "FA":    
+            if fa_supp_count > 1 and item.split("|")[0] == "FA":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
                 f['uid'] = item.split("|")[1]  
-            elif ilerpt > 1 and item.split("|")[0] == "ILERPT":    
+            elif ilerpt_supp_count > 1 and item.split("|")[0] == "ILERPT":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
                 f['uid'] = item.split("|")[1]  
-            elif staf > 1 and item.split("|")[0] == "STAF":    
+            elif staf_supp_count > 1 and item.split("|")[0] == "STAF":    
                 f['app_name']=item.split("|")[0]
                 f['sup_id']=item.split("|")[-3]
                 f['sup_name']=item.split("|")[3]
@@ -124,7 +124,7 @@ def init(request):
             service.id = child.attrib['id']                
             serviceList.append(service)
         serviceList.append(user_data)    
-    return render(request, 'bpgtemplate.html',{"fa":fa,"ilerpt":ilerpt,"staf":staf,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
+    return render(request, 'bpgtemplate.html',{"fa_supp_count":fa_supp_count,"ilerpt_supp_count":ilerpt_supp_count,"staf_supp_count":staf_supp_count,"object_id":object_id,"SupplieracessList":supplieraccess_list,"serviceList":serviceList})
         
 
 # Get User Details        
@@ -345,7 +345,8 @@ def update_user_details(request,user_id,object_id,app_name):
     
     url2 = 'https://graph.microsoft.com/v1.0/users/{}'.format(object_id)
     req_body2 = {}
-    k = str(settings.EXTENTION_USER_ID)+"_"+app_name+"_"+"Session_UserID"
+    updattr = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
+    k = os.environ.get(updattr)+"_"+app_name+"_"+"Session_UserID"
     req_body2[k] = user_id
     print(req_body2)
     head = {'Authorization': 'Bearer  {}'.format(response.json()['access_token'])}
@@ -365,18 +366,18 @@ def update_user_details(request,user_id,object_id,app_name):
     extention_attribute = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
     env_ext_att = os.environ.get(extention_attribute)
     # print("extention_attribute",extention_attribute)
-    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{env_ext_att}',headers=head2)
+    response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{k}',headers=head2)
     json_res = json.loads(response3.text)
     print('*****QUERY JSON RESPONSE****')
     print(json_res)
     print('*****QUERY JSON RESPONSE****')
     for i in range(0,9):
         print(user_id)
-        if json_res[env_ext_att] == user_id:
+        if json_res[k] == user_id:
             break
         else:
             time.sleep(8)
-            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{env_ext_att}',headers=head2)
+            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{k}',headers=head2)
             json_res = json.loads(response3.text)
             
         
