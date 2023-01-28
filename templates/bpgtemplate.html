@@ -303,7 +303,7 @@
 													<!-- begin Go to Service button-->
 
 													{%if lst.serviceCode == "ILERPT" %}	
-													{% if ilerpt > 1 %}
+													{% if ilerpt_supp_count > 1 %}
 														<div class="dropdown">
 															<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 																Go to Service
@@ -329,7 +329,7 @@
 														</a>
 													{%endif%}	
 													{%elif lst.serviceCode == "FA" %}
-													{% if fa > 1 %}
+													{% if fa_supp_count > 1 %}
 													<div class="dropdown">
 														<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 															Go to Service
@@ -354,8 +354,8 @@
 														</button>
 													</a>
 													{%endif%}
-													{%elif lst.serviceCode == "STAF" %}	
-													{%if staf > 1%}
+													{%else%}	
+													{%if staf_supp_count > 1%}
 														<div class="dropdown">
 															<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 																Go to Service
