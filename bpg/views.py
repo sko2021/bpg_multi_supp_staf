@@ -347,7 +347,8 @@ def update_user_details(request,user_id,object_id,app_name):
     req_body2 = {}
     updattr = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
     k = os.environ.get(updattr)+"_"+app_name+"_"+"Session_UserID"
-    req_body2[k] = user_id
+    #req_body2[k] = user_id
+    req_body2[k] = "92de54f5-a4f4-4b11-b829-f8d20265564b|000872561|XPO"
     print(req_body2)
     head = {'Authorization': 'Bearer  {}'.format(response.json()['access_token'])}
     response2 = requests.patch(url=url2, json=req_body2,headers=head)
