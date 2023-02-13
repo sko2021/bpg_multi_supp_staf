@@ -372,7 +372,7 @@ def update_user_details(request,user_id,object_id,app_name):
     print('*****QUERY JSON RESPONSE****')
     print(json_res)
     print('*****QUERY JSON RESPONSE****')
-    #for i in range(0,9):
+    #for i in range(0,9):--not needed
      #   print(user_id)
      #   if json_res[k] == user_id:
      #       break
