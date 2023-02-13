@@ -372,14 +372,14 @@ def update_user_details(request,user_id,object_id,app_name):
     print('*****QUERY JSON RESPONSE****')
     print(json_res)
     print('*****QUERY JSON RESPONSE****')
-    for i in range(0,9):
-        print(user_id)
-        if json_res[k] == user_id:
-            break
-        else:
-            time.sleep(8)
-            response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{k}',headers=head2)
-            json_res = json.loads(response3.text)
+    #for i in range(0,9):
+     #   print(user_id)
+     #   if json_res[k] == user_id:
+     #       break
+     #   else:
+     #       time.sleep(8)
+     #       response3 = requests.get(url=f'https://graph.microsoft.com/v1.0/users/{object_id}?$select=userType,userPrincipalName,{k}',headers=head2)
+     #       json_res = json.loads(response3.text)
             
         
     for child in root:        
