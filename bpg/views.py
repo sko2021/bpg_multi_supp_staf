@@ -341,7 +341,7 @@ def update_user_details(request,user_id,object_id,app_name,sup_id,sup_name):
     updattr = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
     k = os.environ.get(updattr)+"_"+app_name+"_"+"Session_UserID"
     #req_body2[k] = user_id
-    if app_name=='STAFF'
+    if app_name=='STAFF':
      req_body2[k]=user_id+"|"+sup_id+"|"+sup_name
     else
      req_body2[k] = user_id
