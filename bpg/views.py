@@ -90,17 +90,10 @@ def init(request):
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
             try:
                 
-                for item in user_data.ileAccessList:
-
-                    if "FA" == item.split("|")[0].upper(): 
+                for item in user_data.ileAccessList:                         
+                    if service.serviceCode == item.split("|")[0].upper():
                         service.accessFlag = True  
-                        break    
-                    elif "ILERPT" == item.split("|")[0].upper(): 
-                        service.accessFlag = True  
-                        break    
-                    elif "STAF" == item.split("|")[0].upper(): 
-                        service.accessFlag = True  
-                        break                          
+                        break          
                     else :
                         service.accessFlag = False
             except Exception as e:
