@@ -325,7 +325,7 @@ def get_login_url(user_claims):
 
 from django.shortcuts import redirect
 
-def update_user_details(request,user_id,object_id,app_name):
+def update_user_details(request,user_id,object_id,app_name,sup_id,sup_name):
     print("app_name",app_name)
     print("object_id",object_id)
     print("user_id",user_id)
@@ -341,7 +341,10 @@ def update_user_details(request,user_id,object_id,app_name):
     updattr = "EXTENSION_USER_ID_"+app_name+"_"+settings.ENVIRONMENT
     k = os.environ.get(updattr)+"_"+app_name+"_"+"Session_UserID"
     #req_body2[k] = user_id
-    req_body2[k] = "92de54f5-a4f4-4b11-b829-f8d20265564b|000872561|XPO"
+    if app_name=='STAFF'
+     req_body2[k]=user_id+"|"+sup_id+"|"+sup_name
+    else
+     req_body2[k] = user_id
     print(req_body2)
     head = {'Authorization': 'Bearer  {}'.format(response.json()['access_token'])}
     response2 = requests.patch(url=url2, json=req_body2,headers=head)
